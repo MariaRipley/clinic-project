@@ -56,7 +56,7 @@ function RegisterPage() {
           )}
           <button
             type="submit"
-            className="text-sky-50 bg-sky-950 p-1 rounded-md my-2"
+            className="text-sky-50 bg-sky-900 p-1 rounded-md my-2"
           >
             Register
           </button>
