@@ -24,11 +24,13 @@ function RegisterPage() {
     <div className="bg-cover bg-center h-screen bg-[url('/main-bg.jpg')] flex justify-center items-center">
       <div className="w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/3 h-1/2 sm:h-1/2 md:h-1/2 lg:h-1/2 xl:h-1/2 bg-gradient-to-b from-sky-200 to-sky-800 p-4 rounded-lg flex justify-center items-center">
         <form onSubmit={onSubmit}>
-          {registerErrors.map((error, i) => (
-            <div key={i} className="bg-red-500 p-2 text-white">
-              {error}
-            </div>
-          ))}
+          {Array.isArray(registerErrors) &&
+            registerErrors.map((error, i) => (
+              <div key={i} className="bg-red-500 p-2 text-white">
+                {error}
+              </div>
+            ))}
+
           <input
             type="text"
             {...register("username", { required: true })}

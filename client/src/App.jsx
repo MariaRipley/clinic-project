@@ -3,19 +3,30 @@ import { AuthProvider } from "./context/AuthContext";
 
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import PatientsPage from "./pages/PatientsPage";
+import PatientFormPage from "./pages/PatientFormPage";
+import ProfilePage from "./pages/ProfilePage";
+import HomePage from "./pages/HomePage";
+
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<h1>Home page</h1>}></Route>
+          {/* Públicas */}
+          <Route path="/" element={<HomePage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>
-          <Route path="/patients" element={<h1>Patients page</h1>}></Route>
-          <Route path="/add-patient" element={<h1>New patient</h1>}></Route>
-          <Route path="/patients/:id" element={<h1>Update patient</h1>}></Route>
-          <Route path="/profile" element={<h1>Profile</h1>}></Route>
+
+          {/* Protegidas */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/patients" element={<PatientsPage />}></Route>
+            <Route path="/add-patient" element={<PatientFormPage />}></Route>
+            <Route path="/patients/:id" element={<PatientFormPage />}></Route>
+            <Route path="/profile" element={<ProfilePage />}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

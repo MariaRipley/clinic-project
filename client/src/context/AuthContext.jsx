@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerRequest, loginRequest } from "../api/auth";
+import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
+import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
 
@@ -33,7 +34,9 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res);
+      console.log(res.data);
+      setIsAuthenticated(true);
+      setUser(res.data);
     } catch (error) {
       if (Array.isArray(error.response.data)) {
         return setErrors(error.response.data);
@@ -51,6 +54,29 @@ export const AuthProvider = ({ children }) => {
       return () => clearTimeout(timer);
     }
   }, [errors]);
+
+  //Verificar token al cargar la aplicación
+  useEffect(() => {
+    async function checkLogin() {
+      const cookies = Cookies.get();
+
+      if (!cookies.token) {
+        setIsAuthenticated(false);
+        return setUser(null);
+      }
+      try {
+        const res = await verifyTokenRequest(cookies.token);
+        if (!res.data) return setIsAuthenticated(false);
+
+        setIsAuthenticated(true);
+        setUser(res.data);
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    }
+    checkLogin();
+  }, []);
 
   return (
     <AuthContext.Provider
